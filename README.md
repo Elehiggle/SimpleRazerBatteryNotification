@@ -6,7 +6,7 @@
 
 # Simple Razer Battery Notification
 
-This is a very simple tool that runs in the background and notifies you when your Razer mouse/keyboard battery is low (and possibly other devices that are listed via Razer Synapse 3).
+This is a very simple tool that runs in the background and **notifies you via a tray notification and beeps** when your Razer mouse/keyboard battery is low (and possibly other devices that are listed via Razer Synapse 3).
 
 ## Features
 
@@ -15,8 +15,8 @@ This is a very simple tool that runs in the background and notifies you when you
 
 ## Prerequisites
 
-- Python 3.12 or just download the precompiled Windows executable file
-- It uses the Razer Synapse 3 tool which always runs in the background and writes log files. This simple tool watches the log files for battery status changes.
+- Python >=3.9 or just download the precompiled Windows executable file
+- It uses the [Razer Synapse 3](https://www.razer.com/synapse-3) tool which always runs in the background and writes log files. This simple tool watches the log files for battery status changes.
 
 ## Installation
 
