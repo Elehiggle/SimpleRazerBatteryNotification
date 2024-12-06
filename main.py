@@ -1,6 +1,7 @@
 import re
 import ctypes
 import time
+import sys
 import winsound
 import os
 import logging
@@ -31,10 +32,35 @@ def get_foreground_window():
 def send_alert(battery_level):
     toast = Toast()
     toast.text_fields = [f"Battery: {battery_level}%"]
-    WindowsToaster("Simple Razer Battery").show_toast(toast)
-    winsound.Beep(200, 200)
-    winsound.Beep(200, 200)
-    winsound.Beep(200, 200)
+    max_retries = 5
+    retries = 0
+
+    while retries < max_retries:
+        try:
+            WindowsToaster("Simple Razer Battery").show_toast(toast)
+            # If successful, break out of the loop and beep as normal
+            winsound.Beep(200, 200)
+            winsound.Beep(200, 200)
+            winsound.Beep(200, 200)
+            break
+        except ImportError as e:
+            # This exception can occur extremely rarely
+            retries += 1
+            if retries >= max_retries:
+                error_message = (
+                    "An error occurred loading required modules.\n\n"
+                    "The application will now be restarted to resolve this issue."
+                )
+                ctypes.windll.user32.MessageBoxW(None, error_message, "Error", 0)
+
+                # Restart the exe
+                # If running as a PyInstaller-built exe, sys.executable should be the path to it.
+                exe_path = sys.executable
+                # On Windows, re-run the executable with the same arguments.
+                os.execv(exe_path, [exe_path] + sys.argv)
+
+            # If not reached max retries, sleep and try again
+            time.sleep(1)
 
 
 def find_last_entries(log_file_path):
